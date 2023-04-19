@@ -1,0 +1,11 @@
+Exectutive Summary
+
+Assignment Overview:
+The goal of this expanded project is to integrate fault-tolerant consensus using the Paxos algorithm in a replicated server system to ensure continual transaction processing despite replica failures. The system will consist of multiple replica servers that communicate with clients using Java RMI, and will implement the roles of Proposers, Acceptors, and Learners in the Paxos algorithm for achieving consensus on event ordering. The Acceptors will be configured to "fail" at random times to simulate replica failures, and new Acceptor threads will be restarted after a delay to resume the functions of the previously killed threads. The focus of this project will be on implementing the Paxos algorithm and the algorithmic steps involved in realizing consensus in event ordering.
+
+Technical Impression:
+Implementing Paxos in a distributed system can be challenging due to its complexity and the need to handle failures of replica servers. The first step will be to modify the existing server implementation to include the roles of Proposers, Acceptors, and Learners as per the Paxos algorithm. The Proposers will be responsible for proposing values to be agreed upon, the Acceptors will accept or reject proposed values, and the Learners will learn the agreed-upon values. Coordination and communication among these roles will be crucial to ensure consensus is achieved despite failures.
+
+To simulate replica failures, the Acceptors will be configured to "fail" at random times by killing off their threads or returning from their processing after a random period of time. This will require handling the failures gracefully and restarting the Acceptor threads after a delay to resume their functions. It may also be necessary to implement leader election among the Proposers to prevent live lock and ensure progress of the Paxos algorithm.
+
+Overall, this project will require a deep understanding of the Paxos algorithm and its implementation in a distributed system, as well as robust error handling and recovery mechanisms to handle replica failures and ensure continual transaction processing. It will be an exciting and challenging task to integrate Paxos into the existing server system and test its fault tolerance capabilities.
