@@ -1,14 +1,18 @@
 package api;
 
-import common.KVOperation;
 import common.Message;
-import common.Proposal;
 import common.Response.Response;
+import common.ecommerce.CartOperation;
+import common.ecommerce.Customer;
+import common.ecommerce.Product;
+import common.ecommerce.Proposal;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Map;
+import java.util.UUID;
 
-public interface PaxosServer extends KVStore, Remote {
+public interface CartPaxosServer extends Cart, Remote {
     // Paxos phase
     Message promise(Proposal proposal) throws RemoteException;
     Message accept(Proposal proposal) throws RemoteException;
@@ -16,11 +20,14 @@ public interface PaxosServer extends KVStore, Remote {
 
     // recover kv store
     void recover(int port, String hostname) throws RemoteException;
+    Map<UUID, Customer> copyCustomersMap() throws RemoteException;
+    Map<String, Product> copyProductsMap() throws RemoteException;;
+
     void setCoordinator(CoordinatorInterface coordinator) throws RemoteException;
 
     // retrieve method
     int getPort() throws RemoteException;
 
-    // handle client request for KV operation
-    String handleClientRequest(KVOperation operation, String key, String value) throws RemoteException;
+    // handle client request for cart operation
+    String handleClientRequest(UUID customerId, CartOperation operation, String key, int value) throws RemoteException;
 }

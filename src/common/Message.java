@@ -1,5 +1,7 @@
 package common;
 
+import common.ecommerce.Proposal;
+
 import java.io.Serializable;
 
 public class Message implements Serializable {

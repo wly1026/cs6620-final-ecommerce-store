@@ -1,6 +1,7 @@
-import api.PaxosServer;
-import common.KVOperation;
+import api.Cart;
+import api.CartPaxosServer;
 import common.Response.Response;
+import common.ecommerce.Customer;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -10,10 +11,16 @@ import java.util.logging.Logger;
 public class Client {
     private static final Logger LOG = Logger.getLogger("Client.class");
     private static final HashSet REQUEST = new HashSet(Arrays.asList("put", "get", "delete"));
-
+    private static final Map<String, Customer> customers = new HashMap<>(){{
+        put("Andy", new Customer(UUID.randomUUID(), "Andy"));
+        put("Beta", new Customer(UUID.randomUUID(), "Beta"));
+        put("Cindy", new Customer(UUID.randomUUID(), "Cindy"));
+        put("Ella", new Customer(UUID.randomUUID(), "Ella"));
+        put("Danial", new Customer(UUID.randomUUID(), "Danial"));
+    }};
     public static void main(String[] args) throws Exception {
         //String[] dummyargs = new String[]{ "1234","2345","4567","5678","9999"};
-        ArrayList<PaxosServer> servers = new ArrayList<>(5);
+        ArrayList<CartPaxosServer> servers = new ArrayList<>(5);
 
         if (args.length < 5) {
             throw new IllegalArgumentException("Enter the 5 port numbers in command line: java Client.java <port#1> <port#2> <port#3> <port#4> <port#5>");
@@ -24,14 +31,16 @@ public class Client {
         try {
             for (int i = 0; i < 5; i++) {
                 int port = Integer.parseInt(args[i]);
-                servers.add((PaxosServer) Naming.lookup("rmi://" + hostname + ":" + port + "/kvServer"));
-                System.out.printf("KVClient initialized to server %d at port %d.%n", i, port);
+                servers.add((CartPaxosServer) Naming.lookup("rmi://" + hostname + ":" + port + "/kvServer"));
+                System.out.printf("Cart Client initialized to server %d at port %d.%n", i, port);
             }
         }catch (NumberFormatException  e) {
             LOG.warning(e.getMessage());
             LOG.warning("Please start the Client again");
             System.exit(1);
         }
+
+        // generate customers.
 
         // prepopulate value
         prePopulateValue(servers);
@@ -50,7 +59,7 @@ public class Client {
         }
     }
 
-    private static void parseInputMessage(String message, PaxosServer server) throws RemoteException {
+    private static void parseInputMessage(String message, CartPaxosServer server) throws RemoteException {
         String[] splitMessages = message.split(" ");
         String action = splitMessages[0];
         Response res;
@@ -77,16 +86,15 @@ public class Client {
             case "get" -> operation = KVOperation.Get;
             case "delete" -> operation = KVOperation.Delete;
         }
-
-        String output = server.handleClientRequest(operation, key, value);
+        String output = server.handleClientRequest(id, operation, key, value);
         LOG.info(output);
     }
 
 
-    private static void prePopulateValue(ArrayList<PaxosServer> servers) throws RemoteException{
+    private static void prePopulateValue(ArrayList<CartPaxosServer> servers) throws RemoteException{
         // 5 put
-        parseInputMessage("put jack 3", servers.get(0));
-        parseInputMessage("put ally 29",  servers.get(1));
+        parseInputMessage("Danial put jack 3", servers.get(0));
+        parseInputMessage("234 put ally 29",  servers.get(1));
         parseInputMessage("put judy nilson", servers.get(2));
         parseInputMessage("put apple drink",  servers.get(3));
         parseInputMessage("put juice 9999.9", servers.get(4));

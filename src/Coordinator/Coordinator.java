@@ -1,25 +1,24 @@
 package Coordinator;
 
+import api.CartPaxosServer;
 import common.Response.*;
 import api.CoordinatorInterface;
-import api.PaxosServer;
+import api.CartPaxosServer;
 import common.*;
+import common.ecommerce.Proposal;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Coordinator extends UnicastRemoteObject implements CoordinatorInterface {
     private static final Logger LOG = Logger.getLogger("Coordinator.class");
     private Set<Map.Entry<String, Integer>> servers;
-    private ArrayList<PaxosServer> acceptors;
+    private ArrayList<CartPaxosServer> acceptors;
 
     public Coordinator() throws RemoteException {
         super();
@@ -29,10 +28,11 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorInter
     @Override
     public Response execute(Proposal proposal) throws RemoteException {
         this.acceptors = new ArrayList<>();
-        Response response = new Response();
+        UUID customerId = proposal.getRequest().getCustomerId();
+        Response response = new Response(customerId);
         for (Map.Entry<String, Integer> server: this.servers) {
             try {
-                PaxosServer acceptor = (PaxosServer) Naming.lookup("rmi://" + server.getKey() + ":" + server.getValue() + "/kvServer");
+                CartPaxosServer acceptor = (CartPaxosServer) Naming.lookup("rmi://" + server.getKey() + ":" + server.getValue() + "/kvServer");
                 acceptors.add(acceptor);
             } catch (NotBoundException | MalformedURLException e) {
                 // fail to connect ot server
@@ -40,7 +40,6 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorInter
                 continue;
             }
         }
-
 
         // phase 1a -- proposer send PREPARE message
         if (!this.isPrepared(proposal)){
@@ -56,7 +55,7 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorInter
         }
 
         // phase 3 -- learn the message
-        for (PaxosServer acceptor: acceptors) {
+        for (CartPaxosServer acceptor: acceptors) {
             try {
                 response =  acceptor.learn(proposal);
             } catch (Exception e) {
@@ -76,7 +75,7 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorInter
     private boolean isPrepared(Proposal proposal) throws RemoteException{
         int promised = 0;
         Message message;
-        for (PaxosServer acceptor: acceptors){
+        for (CartPaxosServer acceptor: acceptors){
             try {
                 message = acceptor.promise(proposal);
                 if (message == null) {
@@ -102,7 +101,7 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorInter
     private boolean isAccepted(Proposal proposal) throws RemoteException {
         int accepted = 0;
         Message response;
-        for (PaxosServer acceptor: acceptors){
+        for (CartPaxosServer acceptor: acceptors){
             try {
                 response = acceptor.accept(proposal);
                 if (response == null) {

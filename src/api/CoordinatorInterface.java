@@ -1,7 +1,7 @@
 package api;
 
-import common.Proposal;
 import common.Response.Response;
+import common.ecommerce.Proposal;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

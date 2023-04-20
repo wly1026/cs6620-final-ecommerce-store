@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0f0a7c8f-ee8f-4395-92fc-88c919d38491" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/client.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/coordinator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/server.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/thriftCompiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6650-Paxos.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/common/ecommerce/Customer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/common/ecommerce/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/common/ecommerce/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/client_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Coordinator/Coordinator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Coordinator/Coordinator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server/KVServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/CoordinatorInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/CoordinatorInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/PaxosServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/KVObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/KVOperation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/Proposal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/ecommerce/Proposal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/Response/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/Response/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/Response/ResultState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/Response/ResultState.java" afterDir="false" />
+    </list>
+    <list id="6064922b-63e7-45df-8090-c92c930d5835" name="Changes by wentinglin" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Coordinator/Coordinator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Coordinator/Coordinator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/KVStore.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/Response/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/Response/Response.java" afterDir="false" />
+    </list>
+    <list id="6bb05946-b8b8-40ca-b396-c079f45c74a3" name="Changes by ziyan" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Coordinator/Coordinator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Coordinator/Coordinator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server/ServerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/ServerApp.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/src/Client.java">
+      <ranges>
+        <range start1="0" end1="2" start2="0" end2="2" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="3" end1="3" start2="3" end2="4" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="12" end1="13" start2="13" end2="20" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="15" end1="16" start2="22" end2="23" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="26" end1="28" start2="33" end2="35" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="35" end1="35" start2="42" end2="44" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="52" end1="53" start2="61" end2="62" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="79" end1="81" start2="88" end2="89" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+        <range start1="85" end1="86" start2="93" end2="94" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="87" end1="89" start2="95" end2="97" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/src/Coordinator/Coordinator.java">
+      <ranges>
+        <range start1="2" end1="2" start2="2" end2="3" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="4" end1="5" start2="5" end2="6" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+        <range start1="6" end1="6" start2="7" end2="8" changelist="6bb05946-b8b8-40ca-b396-c079f45c74a3" />
+        <range start1="12" end1="16" start2="14" end2="15" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="21" end1="22" start2="20" end2="21" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+        <range start1="31" end1="32" start2="30" end2="32" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+        <range start1="34" end1="35" start2="34" end2="35" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+        <range start1="42" end1="43" start2="42" end2="42" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+        <range start1="58" end1="59" start2="57" end2="58" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+        <range start1="78" end1="79" start2="77" end2="78" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+        <range start1="104" end1="105" start2="103" end2="104" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/src/common/Response/Response.java">
+      <ranges>
+        <range start1="2" end1="3" start2="2" end2="3" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="5" end1="5" start2="5" end2="6" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="7" end1="7" start2="8" end2="9" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="8" end1="11" start2="10" end2="13" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="12" end1="13" start2="14" end2="16" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="15" end1="16" start2="18" end2="30" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="17" end1="18" start2="31" end2="32" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="20" end1="22" start2="34" end2="40" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+        <range start1="23" end1="24" start2="41" end2="41" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="28" end1="29" start2="45" end2="46" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="31" end1="33" start2="48" end2="52" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="35" end1="39" start2="54" end2="60" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="41" end1="42" start2="62" end2="63" changelist="0f0a7c8f-ee8f-4395-92fc-88c919d38491" />
+        <range start1="46" end1="47" start2="67" end2="67" changelist="6064922b-63e7-45df-8090-c92c930d5835" />
+      </ranges>
+    </file>
+  </component>
+  <component name="ProjectId" id="2OeuY8Ioh0Pl7oyzSbM2CUNwDUI" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Code With Me" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="common.ecommerce" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0f0a7c8f-ee8f-4395-92fc-88c919d38491" name="Default Changelist" comment="" />
+      <created>1681933417041</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681933417041</updated>
+      <workItem from="1681933421554" duration="11720000" />
+      <workItem from="1681947568000" duration="1821000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>

@@ -1,4 +1,5 @@
-package common;
+package common.ecommerce;
+
 
 import java.io.Serializable;
 
@@ -6,24 +7,24 @@ import java.io.Serializable;
 public class Proposal implements Serializable {
     private static long serialUID = 0L;
     private long id;
-    private KVObject kvObject;
+    private Request request;
 
-    public Proposal(long id, KVObject kvObject){
+    public Proposal(long id, Request request) {
         this.id = id;
-        this.kvObject = kvObject;
+        this.request = request;
     }
 
-    public long getId(){
-        return this.id;
+    public long getId() {
+        return id;
     }
 
-    public KVObject getKvObject(){
-        return this.kvObject;
+    public Request getRequest() {
+        return request;
     }
 
-    public static synchronized Proposal generateProposal(KVObject kvPair){
+    public static synchronized Proposal generateProposal(Request request){
         long timestamp = System.nanoTime();
-        Proposal proposal = new Proposal(timestamp, kvPair);
+        Proposal proposal = new Proposal(timestamp, request);
         try{
             Thread.sleep(3);
         } catch (InterruptedException e) {
