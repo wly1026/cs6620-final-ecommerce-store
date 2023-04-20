@@ -1,7 +1,5 @@
 package Server;
 
-import api.CartPaxosServer;
-
 import api.CoordinatorInterface;
 import api.CartPaxosServer;
 import common.*;
@@ -26,19 +24,23 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
     private int port;
     private String hostname;
 
-    private Map<UUID, Customer> customers = new HashMap();
-    private Map<String, Product> products = new HashMap<>();
+    private Map<UUID, Customer> customers;
+    private Map<String, Product> products;
     private long maxId;
     private Proposal acceptedProposal;
     private CoordinatorInterface coordinator;
 
-    public CartServer(int port, String hostname) throws RemoteException {
+    public CartServer(int port, String hostname, Map<UUID, Customer> customers, Map<String, Product> products) throws RemoteException {
         this.maxId = 0;
         this.port = port;
         this.hostname = hostname;
+        this.customers = customers;
+        this.products = products;
     }
+
     @Override
     public Response checkout(UUID customerId) throws RemoteException {
+        LOG.info(String.format("server %s perform CHECKOUT request", this.port));
         Response response = new Response(customerId, CartOperation.CheckOut);
         int totalPrice = 0;
 

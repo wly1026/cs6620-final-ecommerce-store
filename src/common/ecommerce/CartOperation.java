@@ -10,5 +10,5 @@ public enum CartOperation {
  *  Remove: remove <product name>
  *  Delete: delete <product name> <count>
  *  CheckOut: checkout -- rest cart, calculate total price
- *  Get: get cart -- retrieve cart items
+ *  Get: get -- retrieve cart items
  */

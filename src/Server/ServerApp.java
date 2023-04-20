@@ -1,7 +1,9 @@
 package Server;
 
-import api.CoordinatorInterface;
 import api.CartPaxosServer;
+import api.CoordinatorInterface;
+import common.ecommerce.Customer;
+import common.ecommerce.Product;
 
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
@@ -11,7 +13,7 @@ public class ServerApp {
     private static final Logger LOG = Logger.getLogger("ServerApp.class");
 
     public static void main(String[] args) throws Exception {
-        //String[] dummyargs = new String[]{ "1234","2345","4567"};
+        //String[] dummyargs = new String[]{"2000","2345","4567"};
         // 0 -> coordinator port; 1 -> server port, 2 -> recover server peer port (optional);
         if (args.length < 2) {
             throw new IllegalArgumentException("Enter the port numbers for the server and coordinator in command line: java ServerApp.java <coordinator port> <port#1> <port#recover - optional> ");
@@ -25,7 +27,7 @@ public class ServerApp {
             coordinator = (CoordinatorInterface) Naming.lookup("rmi://" + hostname + ":" + coordinatorPort + "/coordinator");
 
             int port = Integer.parseInt(args[1]);
-            CartPaxosServer server = new CartServer(port, hostname);
+            CartPaxosServer server = new CartServer(port, hostname, Customer.copyInitCustomersMap(), Product.copyInitProductsMap());
             coordinator.addAcceptor(port, hostname);
             server.setCoordinator(coordinator);
 
