@@ -37,7 +37,7 @@ public class Product {
     public static Map<String, Product> copyInitProductsMap() {
         Map<String, Product> copy = new HashMap<>();
         for (Map.Entry<String, Product> entry: products.entrySet()){
-            copy.put(entry.getKey(), entry.getValue());
+            copy.put(entry.getKey(), entry.getValue().copyProduct());
         }
         return copy;
     }
@@ -52,5 +52,9 @@ public class Product {
 
     public void deductStock(Integer count) {
         this.stock -= count;
+    }
+
+    public Product copyProduct() {
+        return new Product(this.name, this.stock, this.price);
     }
 }

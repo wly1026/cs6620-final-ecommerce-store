@@ -6,27 +6,27 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class Response implements Serializable {
-    private UUID customerId;
+    private int customerId;
     private ResultState state;
     private CartOperation operation;
     private String additionalInfo;
     private String productName;
 
-    public Response(UUID customerId){
-        this.customerId = customerId;
-    }
+//    public Response(int customerId){
+//        this.customerId = customerId;
+//    }
+//
+//    public Response(int customerId, ResultState state) {
+//        this.customerId = customerId;
+//        this.state = state;
+//    }
+//
+//    public Response(int customerId, CartOperation operation) {
+//        this.customerId = customerId;
+//        this.operation = operation;
+//    }
 
-    public Response(UUID customerId, ResultState state) {
-        this.customerId = customerId;
-        this.state = state;
-    }
-
-    public Response(UUID customerId, CartOperation operation) {
-        this.customerId = customerId;
-        this.operation = operation;
-    }
-
-    public Response(UUID customerId, CartOperation operation, String product){
+    public Response(int customerId, CartOperation operation, String product){
         this.customerId = customerId;
         this.operation = operation;
         this.productName = product;
@@ -56,7 +56,7 @@ public class Response implements Serializable {
                     case Get -> message = String.format("customer %s | SUCCESS: Get operation done, cart: %s",this.customerId, this.additionalInfo);
                     case Delete -> message = String.format("customer %s | SUCCESS: Delete operation done for product %s", this.customerId, this.productName);
                     case Remove -> message = String.format("customer %s | SUCCESS: Remove operation done for product %s", this.customerId, this.productName);
-                    case CheckOut-> message = String.format("customer %s | SUCCESS: Checkout operation one, total price: ", this.customerId, this.additionalInfo);
+                    case CheckOut-> message = String.format("customer %s | SUCCESS: Checkout operation done, %s", this.customerId, this.additionalInfo);
                     default -> message = String.format("customer %s | FAILED: There has something wrong response", this.customerId);
                 }
             }

@@ -5,57 +5,63 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Customer {
-    private UUID id;
+    private int id;
     private String name;
     private double totalPrice;
     private Map<String, Integer> cart;  // Product name: Product count
 
-    public static UUID[] uuids = new UUID[]{UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()};
-    public static Map<UUID, Customer> customers = new HashMap<>(){{
-        put(uuids[0], new Customer(uuids[0], "Andy"));
-        put(uuids[1], new Customer(uuids[1], "Beta"));
-        put(uuids[2], new Customer(uuids[2], "Cindy"));
-        put(uuids[3], new Customer(uuids[3], "Ella"));
-        put(uuids[4], new Customer(uuids[4], "Danial"));
+    public static Map<Integer, Customer> customers = new HashMap<>(){{
+        put(0, new Customer(0, "Andy"));
+        put(1, new Customer(1, "Beta"));
+        put(2, new Customer(2, "Cindy"));
+        put(3, new Customer(3, "Ella"));
+        put(4, new Customer(4, "Danial"));
     }};
 
-    public static String getNameByUUID(UUID id) {
+    public static String getNameByID(int id) {
         if (!customers.containsKey(id)) {
             return "Not exist uuid";
         }
         return customers.get(id).getName();
     }
 
-    public static UUID getUUIDByName(String name) {
-        for (UUID id: customers.keySet()) {
+    public static int getIDByName(String name) {
+        for (Integer id: customers.keySet()) {
             if (customers.get(id).getName().equals(name)) {
                 return id;
             }
         }
-        return null;
+        return -1;
     }
 
-    public Customer(UUID id, String name){
+    public Customer(int id, String name){
         this.id = id;
         this.name = name;
         this.totalPrice = 0;
         this.cart = new HashMap<>();
     }
 
-    public static synchronized Customer generateCustomer(String name){
-        UUID id = UUID.randomUUID();
-        return new Customer(id, name);
+    public Customer(int id, String name, double totalPrice, Map<String, Integer> cart) {
+        this.id = id;
+        this.name = name;
+        this.totalPrice = totalPrice;
+        this.cart = cart;
     }
 
-    public static Map<UUID, Customer> copyInitCustomersMap() {
-        Map<UUID, Customer> copy = new HashMap<>();
-        for (Map.Entry<UUID, Customer> entry: customers.entrySet()){
-            copy.put(entry.getKey(), entry.getValue());
+    public static Map<Integer, Customer> copyInitCustomersMap() {
+        Map<Integer, Customer> copy = new HashMap<>();
+        for (Map.Entry<Integer, Customer> entry: customers.entrySet()){
+            copy.put(entry.getKey(), entry.getValue().copyCustomer());
         }
+        System.out.println("Copy customers to a new server:");
+        for (int id: copy.keySet()) {
+            System.out.print(id + " ");
+        }
+        System.out.println("\n");
         return copy;
     }
 
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
 
@@ -104,5 +110,15 @@ public class Customer {
             sb.append(productName).append(" ").append(this.cart.get(productName)).append("; ");
         }
         return sb.toString();
+    }
+
+    public Customer copyCustomer() {
+        Map<String, Integer> copyCart = new HashMap<>();
+
+        for (Map.Entry<String, Integer> entry: this.cart.entrySet()) {
+            copyCart.put(entry.getKey(), entry.getValue());
+        }
+        Customer copy = new Customer(this.id, this.name, this.totalPrice, copyCart);
+        return copy;
     }
 }

@@ -1,20 +1,14 @@
 package common.ecommerce;
 
-import common.KVOperation;
+import java.io.Serializable;
 
-import java.util.UUID;
-
-public class Request {
-    private UUID customerId;
+public class Request implements Serializable {
+    private int customerId;
     private CartOperation operation;
     private int count;
     private String productName;
 
-    public Request(CartOperation operation){
-        this.operation = operation;
-    }
-
-    public Request(UUID customerId, CartOperation operation, String key, int value) {
+    public Request(int customerId, CartOperation operation, String productName, int count) {
         this.customerId = customerId;
         this.operation = operation;
         this.productName = productName;
@@ -29,7 +23,7 @@ public class Request {
         return this.count;
     }
 
-    public UUID getCustomerId(){
+    public int getCustomerId(){
         return this.customerId;
     }
 

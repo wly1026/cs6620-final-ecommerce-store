@@ -20,7 +20,7 @@ public interface CartPaxosServer extends Cart, Remote {
 
     // recover kv store
     void recover(int port, String hostname) throws RemoteException;
-    Map<UUID, Customer> copyCustomersMap() throws RemoteException;
+    Map<Integer, Customer> copyCustomersMap() throws RemoteException;
     Map<String, Product> copyProductsMap() throws RemoteException;;
 
     void setCoordinator(CoordinatorInterface coordinator) throws RemoteException;
@@ -29,5 +29,5 @@ public interface CartPaxosServer extends Cart, Remote {
     int getPort() throws RemoteException;
 
     // handle client request for cart operation
-    String handleClientRequest(UUID customerId, CartOperation operation, String key, int value) throws RemoteException;
+    String handleClientRequest(int customerId, CartOperation operation, String key, int value) throws RemoteException;
 }

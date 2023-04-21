@@ -13,7 +13,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
@@ -24,37 +23,40 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
     private int port;
     private String hostname;
 
-    private Map<UUID, Customer> customers;
+    private Map<Integer, Customer> customers;
     private Map<String, Product> products;
     private long maxId;
     private Proposal acceptedProposal;
     private CoordinatorInterface coordinator;
 
-    public CartServer(int port, String hostname, Map<UUID, Customer> customers, Map<String, Product> products) throws RemoteException {
+    public CartServer(int port, String hostname, Map<Integer, Customer> customers, Map<String, Product> products) throws RemoteException {
         this.maxId = 0;
         this.port = port;
         this.hostname = hostname;
-        this.customers = customers;
         this.products = products;
+        this.customers = customers;
     }
 
     @Override
-    public Response checkout(UUID customerId) throws RemoteException {
+    public Response checkout(int customerId) throws RemoteException {
         LOG.info(String.format("server %s perform CHECKOUT request", this.port));
-        Response response = new Response(customerId, CartOperation.CheckOut);
+        Response response = new Response(customerId, CartOperation.CheckOut, "");
         int totalPrice = 0;
 
         Map<String, Integer> cart = this.customers.get(customerId).getCart();
+
         // check if the products in cart has enough stock
         for (String productName: cart.keySet()) {
             if (!this.products.containsKey(productName)) {
                 LOG.info(String.format("Invalid product. Please check and try again."));
+                response.setAdditionalInfo(productName);
                 response.setState(ResultState.PRODUCT_NOT_FOUND);
                 return response;
             }
             Product product = products.get(productName);
             if (product.getStock() < cart.get(productName)) {
                 LOG.info(String.format("Insufficient stock. Please check and try again."));
+                response.setAdditionalInfo(productName);
                 response.setState(ResultState.INSUFFICIENT_STOCK);
                 return response;
             }
@@ -67,20 +69,22 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
             product.deductStock(cart.get(productName));
         }
 
-        // reset the cart.
-        this.customers.get(customerId).resetCart();
-
         // set the total price.
         this.customers.get(customerId).setTotalPrice(totalPrice);
 
         response.setState(ResultState.SUCCESS);
+        response.setAdditionalInfo("Total price: " + totalPrice + ", Cart: " + this.customers.get(customerId).printCart());
+
+        // reset the cart.
+        this.customers.get(customerId).resetCart();
+
         return response;
     }
 
     @Override
-    public Response add(UUID customerId, String productName, int count) throws RemoteException {
+    public Response add(int customerId, String productName, int count) throws RemoteException {
         LOG.info(String.format("server %s perform ADD request for add product: %s's count with %d", this.port, productName, count));
-        Response response = new Response(customerId, CartOperation.Add);
+        Response response = new Response(customerId, CartOperation.Add, productName);
 
         Customer customer = customers.get(customerId);
         int productStock = products.get(productName).getStock();
@@ -93,7 +97,7 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
             customer.addItem(productName, count);
             response.setState(ResultState.SUCCESS);
             int newCount = customer.getCart().get(productName);
-            LOG.info(String.format("Updated cart: product: &s's count changed to: &d", productName, newCount));
+            LOG.info(String.format("Updated cart: product: %s's count changed to: %d", productName, newCount));
             response.setAdditionalInfo(String.valueOf(newCount));
         }
 
@@ -101,9 +105,9 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
     }
 
     @Override
-    public Response delete(UUID customerId, String productName, int count) throws RemoteException {
-        LOG.info(String.format("server %s perform DELETE request for delete product: &s's count with %d", this.port, productName, count));
-        Response response = new Response(customerId, CartOperation.Delete);
+    public Response delete(int customerId, String productName, int count) throws RemoteException {
+        LOG.info(String.format("server %s perform DELETE request for delete product: %s's count with %d", this.port, productName, count));
+        Response response = new Response(customerId, CartOperation.Delete, productName);
 
         Customer customer = customers.get(customerId);
         if(!customer.getCart().containsKey(productName)) {
@@ -121,16 +125,16 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
         } else {
             newCount = customer.getCart().get(productName);
         }
-        LOG.info(String.format("Updated cart: product: &s's count changed to: &d", productName, newCount));
+        LOG.info(String.format("Updated cart: product: %s's count changed to: %d", productName, newCount));
         response.setAdditionalInfo(String.valueOf(newCount));
 
         return response;
     }
 
     @Override
-    public Response remove(UUID customerId, String productName) throws RemoteException {
-        LOG.info(String.format("server %s perform REMOVE request for product: &s", this.port, productName));
-        Response response = new Response(customerId, CartOperation.Remove);
+    public Response remove(int customerId, String productName) throws RemoteException {
+        LOG.info(String.format("server %s perform REMOVE request for product: %s", this.port, productName));
+        Response response = new Response(customerId, CartOperation.Remove, productName);
         Customer customer = customers.get(customerId);
         Map<String, Integer> customerCart = customer.getCart();
         if(!customerCart.containsKey(productName)) {
@@ -140,15 +144,15 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
         }
 
         customerCart.remove(productName);
-        LOG.info(String.format("Updated cart: product: &s has been removed from the cart.", productName));
+        LOG.info(String.format("Updated cart: product: %s has been removed from the cart.", productName));
         response.setState(ResultState.SUCCESS);
         return response;
     }
 
     @Override
-    public Response get(UUID customerId) throws RemoteException {
+    public Response get(int customerId) throws RemoteException {
         LOG.info(String.format("server %s perform GET request for all products in his/her cart", this.port));
-        Response response = new Response(customerId, CartOperation.Get);
+        Response response = new Response(customerId, CartOperation.Get, "");
 
         Customer customer = customers.get(customerId);
         response.setAdditionalInfo(customer.printCart());
@@ -240,9 +244,9 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
     }
 
     @Override
-    public Map<UUID, Customer> copyCustomersMap() throws RemoteException {
-        Map<UUID, Customer> copy = new HashMap<>();
-        for (Map.Entry<UUID, Customer> entry: this.customers.entrySet()){
+    public Map<Integer, Customer> copyCustomersMap() throws RemoteException {
+        Map<Integer, Customer> copy = new HashMap<>();
+        for (Map.Entry<Integer, Customer> entry: this.customers.entrySet()){
             copy.put(entry.getKey(), entry.getValue());
         }
         return copy;
@@ -268,13 +272,13 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
     }
 
     @Override
-    public String handleClientRequest(UUID customerId, CartOperation operation, String key, int value) throws RemoteException {
+    public String handleClientRequest(int customerId, CartOperation operation, String productName, int count) throws RemoteException {
         Response response = null;
         if (!this.customers.containsKey(customerId)){
             LOG.info(String.format("Invalid customer Id. Please check and try again."));
-            response = new Response(customerId, ResultState.CUSTOMER_NOT_FOUND);
+            response = new Response(customerId, operation, productName);
         } else {
-            Request request = new Request(customerId, operation, key, value);
+            Request request = new Request(customerId, operation, productName, count);
             Proposal proposal = Proposal.generateProposal(request);
             response = this.coordinator.execute(proposal);
         }

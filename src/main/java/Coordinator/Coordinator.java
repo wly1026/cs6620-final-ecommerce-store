@@ -28,8 +28,8 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorInter
     @Override
     public Response execute(Proposal proposal) throws RemoteException {
         this.acceptors = new ArrayList<>();
-        UUID customerId = proposal.getRequest().getCustomerId();
-        Response response = new Response(customerId);
+        int customerId = proposal.getRequest().getCustomerId();
+        Response response = new Response(customerId, proposal.getRequest().getOperation(), proposal.getRequest().getProductName());
         for (Map.Entry<String, Integer> server: this.servers) {
             try {
                 CartPaxosServer acceptor = (CartPaxosServer) Naming.lookup("rmi://" + server.getKey() + ":" + server.getValue() + "/kvServer");

@@ -64,7 +64,7 @@ public class Client {
     private static void parseInputMessage(String message, CartPaxosServer server) throws RemoteException {
         String[] splitMessages = message.split(" ");
         String userName = splitMessages[0];
-        UUID id = Customer.getUUIDByName(userName);
+        int id = Customer.getIDByName(userName);
         String action = splitMessages[1];
 
         if (!REQUEST.contains(action) || splitMessages.length > 4 || splitMessages.length < 2){
@@ -107,19 +107,19 @@ public class Client {
     private static void prePopulateValue(ArrayList<CartPaxosServer> servers) throws RemoteException{
         // Populate data for the 5 customers
         String[] addCmd = new String[]{"add apple 3", "add shirt 2", "add book 11", "add watermelon 2", "add juice 33"};
-        for (UUID id: Customer.customers.keySet()) {
-            String name = Customer.getNameByUUID(id);
+        for (int id: Customer.customers.keySet()) {
+            String name = Customer.getNameByID(id);
             for (int i = 0; i < addCmd.length; i++) {
                 int randomServer = (int) Math.random() * 5;
-                parseInputMessage(name + addCmd[i], servers.get(randomServer));
+                parseInputMessage(name + " " + addCmd[i], servers.get(randomServer));
             }
         }
 
         // Get the info of 5 carts
-        for (UUID id: Customer.customers.keySet()) {
-            String name = Customer.getNameByUUID(id);
+        for (int id: Customer.customers.keySet()) {
+            String name = Customer.getNameByID(id);
             int randomServer = (int) Math.random() * 5;
-            parseInputMessage(name + "get", servers.get(randomServer));
+            parseInputMessage(name + " get", servers.get(randomServer));
         }
         parseInputMessage("nonexistence get",  servers.get(3)); // get null
 
@@ -131,10 +131,10 @@ public class Client {
         parseInputMessage("Danial delete invalid_product",  servers.get(1)); // no exsited
 
         // Get the info of 5 carts
-        for (UUID id: Customer.customers.keySet()) {
-            String name = Customer.getNameByUUID(id);
+        for (int id: Customer.customers.keySet()) {
+            String name = Customer.getNameByID(id);
             int randomServer = (int) Math.random() * 5;
-            parseInputMessage(name + "get", servers.get(randomServer));
+            parseInputMessage(name + " get", servers.get(randomServer));
         }
     }
 }
