@@ -1,10 +1,11 @@
 package common.ecommerce;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Customer {
+public class Customer implements Serializable {
     private int id;
     private String name;
     private double totalPrice;
@@ -53,11 +54,6 @@ public class Customer {
         for (Map.Entry<Integer, Customer> entry: customers.entrySet()){
             copy.put(entry.getKey(), entry.getValue().copyCustomer());
         }
-        System.out.println("Copy customers to a new server:");
-        for (int id: copy.keySet()) {
-            System.out.print(id + " ");
-        }
-        System.out.println("\n");
         return copy;
     }
 

@@ -1,4 +1,4 @@
-package Coordinator;
+package coordinator;
 
 import api.CartPaxosServer;
 import common.Response.*;
@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class Coordinator extends UnicastRemoteObject implements CoordinatorInterface {
-    private static final Logger LOG = Logger.getLogger("Coordinator.class");
+    private static final Logger LOG = Logger.getLogger("coordinator.class");
     private Set<Map.Entry<String, Integer>> servers;
     private ArrayList<CartPaxosServer> acceptors;
 
@@ -34,9 +34,9 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorInter
             try {
                 CartPaxosServer acceptor = (CartPaxosServer) Naming.lookup("rmi://" + server.getKey() + ":" + server.getValue() + "/kvServer");
                 acceptors.add(acceptor);
-            } catch (NotBoundException | MalformedURLException e) {
+            } catch (Exception e) {
                 // fail to connect ot server
-                LOG.warning(e.getMessage());
+                LOG.warning(String.format("Fail to connect to server at port %d, error: %s", server.getValue(), e.getMessage()));
                 continue;
             }
         }
@@ -108,7 +108,6 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorInter
                     LOG.info(String.format("RESPONSE: Acceptor at port %d has NO RESPONSE for id %d.", acceptor.getPort(), proposal.getId()));
                 } else if (response.getState().equals(PaxosState.ACCEPT)) {
                     accepted++;
-                    LOG.info(String.format("RESPONSE: Acceptor at port %d has ACCEPT for id %d.", acceptor.getPort(), proposal.getId()));
                 } else if (response.getState().equals(PaxosState.REJECT)) {
                     LOG.info(String.format("RESPONSE: Acceptor at port %d has REJECT for id %d.", acceptor.getPort(), proposal.getId()));
                 } else {

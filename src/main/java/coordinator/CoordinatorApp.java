@@ -1,4 +1,4 @@
-package Coordinator;
+package coordinator;
 
 import api.CoordinatorInterface;
 
@@ -24,8 +24,8 @@ public class CoordinatorApp {
             CoordinatorInterface coordinator = new Coordinator();
             LocateRegistry.createRegistry(coordinatorPort);
             Naming.bind("rmi://" + hostname + ":" + coordinatorPort + "/coordinator", coordinator);
-            System.out.println("Coordinator connect at port " + coordinatorPort);
-        }catch (NumberFormatException e){
+            System.out.println("coordinator connect at port " + coordinatorPort);
+        } catch (NumberFormatException e){
             LOG.warning(e.getMessage());
             LOG.warning("Invalid number input");
             System.exit(1);

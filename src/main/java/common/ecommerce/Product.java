@@ -1,9 +1,10 @@
 package common.ecommerce;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Product {
+public class Product implements Serializable {
     private String name;
     private int stock;
     private double price;

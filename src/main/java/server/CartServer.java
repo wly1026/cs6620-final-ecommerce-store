@@ -1,4 +1,4 @@
-package Server;
+package server;
 
 import api.CoordinatorInterface;
 import api.CartPaxosServer;
@@ -239,7 +239,7 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
             this.products = peer.copyProductsMap();
             LOG.info(String.format("Recover from the live server at port %d.", peerPort));
         } catch (Exception e){
-            LOG.warning(String.format("Failed to recover the server from the live server at port %d.", peerPort));
+            LOG.warning(String.format("Failed to recover the server from the live server at port %d, error: %s", peerPort, e.getMessage()));
         }
     }
 

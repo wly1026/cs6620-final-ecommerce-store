@@ -1,5 +1,5 @@
 # Project 4 Instruction
-1) Start the Coordinator first with selected port number
+1) Start the coordinator first with selected port number
     ```
     java -jar coordinator.jar 2000
     ```

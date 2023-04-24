@@ -1,47 +1,36 @@
-package Client;
+package client;
 
-import api.Cart;
 import api.CartPaxosServer;
-import common.Response.Response;
 import common.ecommerce.CartOperation;
 import common.ecommerce.Customer;
 import common.ecommerce.Product;
 
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.logging.Logger;
 
 public class Client {
-    private static final Logger LOG = Logger.getLogger("Client.Client.class");
+    private static final Logger LOG = Logger.getLogger("client.client.class");
     private static final HashSet REQUEST = new HashSet(Arrays.asList("add", "get", "delete", "remove", "checkout"));
+    private static ArrayList<CartPaxosServer> servers;
 
     public static void main(String[] args) throws Exception {
-        //String[] dummyargs = new String[]{ "1234","2345","4567","5678","9999"};
-        ArrayList<CartPaxosServer> servers = new ArrayList<>(5);
+        //String[] dummyargs = new String[]{ "1234","2345","4567","5678","9999"}
 
         if (args.length < 6) {
-            throw new IllegalArgumentException("Enter init option and the 5 port numbers in command line: java Client.Client.java <true|false> <port#1> <port#2> <port#3> <port#4> <port#5>");
+            throw new IllegalArgumentException("Enter init option and the 5 port numbers in command line: java client.client.java <true|false> <port#1> <port#2> <port#3> <port#4> <port#5>");
         }
 
         String hostname = "localhost";
 
         boolean isInit = args[0].equals("true");
 
-        try {
-            for (int i = 1; i < 6; i++) {
-                int port = Integer.parseInt(args[i]);
-                servers.add((CartPaxosServer) Naming.lookup("rmi://" + hostname + ":" + port + "/kvServer"));
-                System.out.printf("Cart Client.Client initialized to server %d at port %d.%n", i, port);
-            }
-        }catch (NumberFormatException  e) {
-            LOG.warning(e.getMessage());
-            LOG.warning("Please start the Client.Client again");
-            System.exit(1);
-        }
-
         // prepopulate value
         if (isInit) {
+            buildConnection(args, hostname);
             prePopulateValue(servers);
         }
 
@@ -49,15 +38,40 @@ public class Client {
         Random rand = new Random();
 
         while(true) {
-            Product.printProducts();
+            buildConnection(args, hostname);
+            System.out.println(Product.printProducts());
             System.out.println("Enter a string to send to server");
             String message = scanner.nextLine();
-            int rand_server = rand.nextInt(5);
+            int rand_server = rand.nextInt(servers.size());
             if (message.isBlank() || message.isEmpty() || message.trim().equals("bye")) {
                 LOG.info("Connection close");
                 return;
             }
-            parseInputMessage(message, servers.get(rand_server));
+
+            try {
+                parseInputMessage(message, servers.get(rand_server));
+            } catch (RemoteException e) {
+                LOG.warning("Fail to execute: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void buildConnection(String[] args, String hostname) {
+        servers = new ArrayList<>(5);
+        StringBuilder successPort = new StringBuilder(), failPort = new StringBuilder();
+        for (int i = 1; i < 6; i++) {
+            int port = 0;
+            try {
+                port = Integer.parseInt(args[i]);
+                servers.add((CartPaxosServer) Naming.lookup("rmi://" + hostname + ":" + port + "/kvServer"));
+                successPort.append(String.format("server at port %d; ", port));
+            } catch (NumberFormatException | NotBoundException | MalformedURLException | RemoteException e) {
+                failPort.append(String.format("server at port %d, error: %s; ", port, e.getMessage()));
+            }
+        }
+        System.out.printf("Client connects with %s\n", successPort.toString());
+        if (!failPort.isEmpty()) {
+            System.out.printf("Client fails to connect with %s\n", failPort.toString());
         }
     }
 
