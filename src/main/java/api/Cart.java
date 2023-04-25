@@ -4,7 +4,6 @@ import common.Response.Response;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.UUID;
 
 public interface Cart extends Remote{
     Response checkout(int customerId) throws RemoteException;

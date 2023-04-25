@@ -2,12 +2,17 @@ package server;
 
 import api.CoordinatorInterface;
 import api.CartPaxosServer;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.MessageProperties;
 import common.*;
 import common.Response.Response;
 import common.Response.ResultState;
 import common.ecommerce.*;
 import common.ecommerce.Proposal;
 
+import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -16,9 +21,11 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
+//Producer of MQ
 
 public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
     private static final Logger LOG = Logger.getLogger("CartServer.class");
+    private static final String TASK_QUEUE_NAME = "task_queue";
 
     private int port;
     private String hostname;
@@ -63,11 +70,11 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
             totalPrice += cart.get(productName) * product.getPrice();
         }
 
-        // deduct the stock.
-        for (String productName: cart.keySet()) {
-            Product product = products.get(productName);
-            product.deductStock(cart.get(productName));
-        }
+        // deduct the stock. (work done in checkoutserver after pushing the customer id to mq)
+//        for (String productName: cart.keySet()) {
+//            Product product = products.get(productName);
+//            product.deductStock(cart.get(productName));
+//        }
 
         // set the total price.
         this.customers.get(customerId).setTotalPrice(totalPrice);
@@ -79,6 +86,20 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
         this.customers.get(customerId).resetCart();
 
         return response;
+    }
+
+    private void produceMessage(String customerId) throws Exception{
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("localhost");
+        try (Connection connection = factory.newConnection();
+             Channel channel = connection.createChannel()) {
+            channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null);
+
+            channel.basicPublish("", TASK_QUEUE_NAME,
+                    MessageProperties.PERSISTENT_TEXT_PLAIN,
+                    customerId.getBytes("UTF-8"));
+            System.out.println(" [x] Sent checkout request for customer: '" + customerId + "'");
+        }
     }
 
     @Override
@@ -283,6 +304,16 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
             response = this.coordinator.execute(proposal);
         }
 
+        if (operation.equals(CartOperation.CheckOut) && response.getState().equals(ResultState.SUCCESS)){
+            // publish the customer id to the consumer
+            System.out.println();
+            try{
+                produceMessage(String.valueOf(customerId));
+            } catch (Exception e){
+                e.getMessage();
+            }
+
+        }
         if (response != null){
             return response.getMessage();
 

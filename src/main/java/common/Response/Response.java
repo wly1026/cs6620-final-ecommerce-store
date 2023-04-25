@@ -32,6 +32,10 @@ public class Response implements Serializable {
         this.productName = product;
     }
 
+    public ResultState getState(){
+        return this.state;
+    }
+
     // case 1. checkout -> fail: insufficient stock item
     // case 2. checkout -> success: total price
     // case 2. get -> current cart item list

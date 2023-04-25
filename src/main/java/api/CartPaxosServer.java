@@ -10,7 +10,6 @@ import common.ecommerce.Proposal;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Map;
-import java.util.UUID;
 
 public interface CartPaxosServer extends Cart, Remote {
     // Paxos phase
