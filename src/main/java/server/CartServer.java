@@ -70,11 +70,11 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
             totalPrice += cart.get(productName) * product.getPrice();
         }
 
-        // deduct the stock. (work done in checkoutserver after pushing the customer id to mq)
-//        for (String productName: cart.keySet()) {
-//            Product product = products.get(productName);
-//            product.deductStock(cart.get(productName));
-//        }
+        // deduct the stock.
+        for (String productName: cart.keySet()) {
+            Product product = products.get(productName);
+            product.deductStock(cart.get(productName));
+        }
 
         // set the total price.
         this.customers.get(customerId).setTotalPrice(totalPrice);
@@ -98,7 +98,7 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
             channel.basicPublish("", TASK_QUEUE_NAME,
                     MessageProperties.PERSISTENT_TEXT_PLAIN,
                     customerId.getBytes("UTF-8"));
-            System.out.println(" [x] Sent checkout request for customer: '" + customerId + "'");
+            System.out.println(" [x] Sent packaging request for customer: '" + customerId + "'");
         }
     }
 
@@ -305,15 +305,14 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
         }
 
         if (operation.equals(CartOperation.CheckOut) && response.getState().equals(ResultState.SUCCESS)){
-            // publish the customer id to the consumer
-            System.out.println();
+            // publish the customer id to the consumer (packaging service)
             try{
                 produceMessage(String.valueOf(customerId));
             } catch (Exception e){
                 e.getMessage();
             }
-
         }
+
         if (response != null){
             return response.getMessage();
 
