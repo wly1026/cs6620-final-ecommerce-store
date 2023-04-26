@@ -12,7 +12,6 @@ import common.Response.ResultState;
 import common.ecommerce.*;
 import common.ecommerce.Proposal;
 
-import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -91,14 +90,14 @@ public class CartServer extends UnicastRemoteObject implements CartPaxosServer {
     private void produceMessage(String customerId) throws Exception{
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
-        try (Connection connection = factory.newConnection();
-             Channel channel = connection.createChannel()) {
+        System.out.println(" [x] produce message now:....");
+        try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
             channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null);
 
             channel.basicPublish("", TASK_QUEUE_NAME,
                     MessageProperties.PERSISTENT_TEXT_PLAIN,
                     customerId.getBytes("UTF-8"));
-            System.out.println(" [x] Sent packaging request for customer: '" + customerId + "'");
+            System.out.println(" [x] Sent packaging request to packaging server for customer: '" + customerId + "'.");
         }
     }
 
